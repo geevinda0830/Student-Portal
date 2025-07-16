@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal - Register</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="nav-logo">Student Portal</h1>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="register.html" class="nav-link active">Register</a></li>
+                <li><a href="login.html" class="nav-link">Login</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+            </ul>
+            <button id="theme-toggle" class="theme-btn">🌙</button>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="form-container">
+            <h2>Student Registration</h2>
+            
+            <?php if (isset($_SESSION['registration_errors'])): ?>
+                <div class="message error">
+                    <?php foreach ($_SESSION['registration_errors'] as $error): ?>
+                        <p><?php echo $error; ?></p>
+                    <?php endforeach; ?>
+                    <?php unset($_SESSION['registration_errors']); ?>
+                </div>
+            <?php endif; ?>
+
+            <form id="registerForm" action="process_registration.php" method="POST">
+                <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input type="text" id="firstName" name="firstName" required 
+                           value="<?php echo isset($_SESSION['registration_data']['firstName']) ? htmlspecialchars($_SESSION['registration_data']['firstName']) : ''; ?>">
+                    <span class="error-message" id="firstNameError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="lastName" name="lastName" required
+                           value="<?php echo isset($_SESSION['registration_data']['lastName']) ? htmlspecialchars($_SESSION['registration_data']['lastName']) : ''; ?>">
+                    <span class="error-message" id="lastNameError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required
+                           value="<?php echo isset($_SESSION['registration_data']['email']) ? htmlspecialchars($_SESSION['registration_data']['email']) : ''; ?>">
+                    <span class="error-message" id="emailError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="studentId">Student ID</label>
+                    <input type="text" id="studentId" name="studentId" required
+                           value="<?php echo isset($_SESSION['registration_data']['studentId']) ? htmlspecialchars($_SESSION['registration_data']['studentId']) : ''; ?>">
+                    <span class="error-message" id="studentIdError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="password-input">
+                        <input type="password" id="password" name="password" required>
+                        <button type="button" class="password-toggle" onclick="togglePassword('password')">👁️</button>
+                    </div>
+                    <span class="error-message" id="passwordError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <div class="password-input">
+                        <input type="password" id="confirmPassword" name="confirmPassword" required>
+                        <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')">👁️</button>
+                    </div>
+                    <span class="error-message" id="confirmPasswordError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="course">Course</label>
+                    <select id="course" name="course" required>
+                        <option value="">Select Course</option>
+                        <option value="Computer Science" <?php echo (isset($_SESSION['registration_data']['course']) && $_SESSION['registration_data']['course'] === 'Computer Science') ? 'selected' : ''; ?>>Computer Science</option>
+                        <option value="Information Technology" <?php echo (isset($_SESSION['registration_data']['course']) && $_SESSION['registration_data']['course'] === 'Information Technology') ? 'selected' : ''; ?>>Information Technology</option>
+                        <option value="Software Engineering" <?php echo (isset($_SESSION['registration_data']['course']) && $_SESSION['registration_data']['course'] === 'Software Engineering') ? 'selected' : ''; ?>>Software Engineering</option>
+                        <option value="Data Science" <?php echo (isset($_SESSION['registration_data']['course']) && $_SESSION['registration_data']['course'] === 'Data Science') ? 'selected' : ''; ?>>Data Science</option>
+                    </select>
+                    <span class="error-message" id="courseError"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+
+            <p class="form-footer">
+                Already have an account? <a href="login.html">Login here</a>
+            </p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 Student Portal. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Clear registration data from session after displaying
+        <?php if (isset($_SESSION['registration_data'])) { unset($_SESSION['registration_data']); } ?>
+    </script>
+</body>
+</html>
